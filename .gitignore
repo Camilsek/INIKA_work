@@ -1,3 +1,14 @@
+# Added for INIKA project
+**/.*xlsx
+**/.*csv
+data/
+results/
+**.Rprofile
+**.Rhistory
+**.Rproj
+**.sqlite
+*.html
+
 # History files
 .Rhistory
 .Rapp.history
@@ -39,8 +50,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
 
 # translation temp files
 po/*~
