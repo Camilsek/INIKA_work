@@ -44,16 +44,16 @@ Nine isolates were confirmed as *E. coli* and *S. enterica*.
  - C = Camilla
 
 
-- - A2 E
-- - A4 M
-- - B3 A
-- - C1 E
-- - C2 C
-- - C4 M
-- - D1 C
-- - D2 C
-- - D4 A
+- - A2 - E
+- - A4 - M
+- - B3 - A
+- - C1 - E
+- - C2 - C
+- - C4 - M
+- - D1 - C
+- - D2 - C
+- - D4 - A
 
-
+Subculturing of strains for DNA extraction were done 19.11.2024.
 
 
