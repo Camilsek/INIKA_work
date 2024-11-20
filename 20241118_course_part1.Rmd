@@ -3,9 +3,9 @@ title: "20241118_course_part1"
 author: "camilsek"
 date: "`r Sys.Date()`"
 output:
-
   html_document: default
-
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Course part 1 - laboratory
@@ -127,3 +127,133 @@ test2*test2
 test2 * c(1,2)
 ```
 
+- deactivate the output in the markdown document settings "chunk output un the console".
+
+Need to reduce number of columns in the human dataset
+
+```{r}
+glimpse(human_data)
+str(human_data)
+```
+
+- renaming column names (easier to use)
+```{r}
+original_names <- colnames(human_data)
+original_names
+```
+
+```{r}
+new_names <- str_replace_all(original_names, " ","_")
+new_names
+new_names[88]
+```
+
+Remove all strange characters
+- regex pattern
+```{r}
+new_names2 <- str_replace_all(new_names, "[?/,;.*()-]","_")
+new_names2
+new_names2[88]
+```
+
+```{r}
+colnames(human_data) <- new_names2
+```
+
+```{r}
+colnames(human_data) <- new_names2
+colnames(human_data)[88]
+```
+
+- learn how to select columns and transfer the data set we need. Want to reduce size of the table.
+
+```{r}
+human_data%>%
+  select(INIKA_OH_TZ_ID,Age__yrs_,Gender) %>%
+  head()
+```
+
+```{r}
+human_data_selection <- 
+  human_data %>%
+  select(INIKA_OH_TZ_ID, Age__yrs_, Gender, Enter_a_date, Region, District, 
+         Specify_if_other_district, Sample, Season, Origin_of_sample, 
+         Which_class_grade_are_you__, 
+         Who_is_your_caretaker__, 
+         If_others__mention, 
+         What_is_your_occupation_and_or_of_your_caretaker__, 
+         Have_you_ever_heard_about_AMR_, If_yes__how_did_you_get_this_information_, 
+         Have_you_or_your_children_used_any_antibiotics_at_any_time_, 
+         If_yes__where_did_you_get_these_drugs_from_,
+         If_it_was_drug_sellers_or_pharmacy__did_you_have_a_prescription_from_the_doctor_prescriber_,
+         GPS_coordinates) 
+
+human_data_selection %>% View()
+```
+
+Gjorde endringer i skriptet manuelt, men det er en måte å fjerne både underscore foran og bak i fila: str_remove_all("(^_*)|(_*$)").
+
+```{r}
+human_data_selection %>% head()
+```
+
+```{r}
+glimpse(human_data_selection)
+```
+
+Gives you the type, dbl, chr, etc
+
+```{r}
+str(human_data_selection)
+```
+str also gives you some information about the data in the different columns
+
+remove column
+
+```{r}
+human_data_selection %>%
+  select(-Specify_if_other_district) %>%
+  mutate_at(vars(INIKA_OH_TZ_ID), as.character) %>%
+  mutate_at(vars(Age__yrs_), as.integer) %>%
+  str()
+```
+
+Difference between categorical variable and character?
+
+```{r}
+human_data_selection %>%
+  select(-Specify_if_other_district) %>%
+  mutate_at(vars(INIKA_OH_TZ_ID), as.character) %>%
+  mutate_at(vars(Age__yrs_), as.integer) %>%
+  mutate_if(is.character, factor) %>%
+  str()
+```
+
+Endre fra character til factor
+
+```{r}
+human_data_selection <-
+human_data_selection %>%
+  select(-Specify_if_other_district) %>%
+  mutate_at(vars(Age__yrs_), as.integer) %>%
+  mutate_if(is.character, factor) %>%
+  mutate_at(vars(INIKA_OH_TZ_ID), as.character)
+```
+
+When happy with the changes assign or reassign to the name by <-
+Remember to remove %>%
+
+```{r}
+summary(human_data_selection)
+```
+
+```{r}
+human_data_selection %>%
+  filter(INIKA_OH_TZ_ID == "238")
+```
+
+```{r}
+human_data_selection %>%
+  filter(INIKA_OH_TZ_ID != "238") %>%
+  filter(is.na(Gender))
+```
