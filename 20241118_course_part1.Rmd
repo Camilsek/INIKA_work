@@ -57,11 +57,81 @@ human_data <-
   readr::read_csv2(path_data)
 ```
 
-# R Markdown
+day3
+#Packagees into memory
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library (here)
+library(tidyverse)
 ```
+
+```{r}
+?library()
+help("library")
+```
+
+Another way of using help - se på "Help" fane bruk F1 i selve funksjonen feks funksjonen library(here) sett kursor på library før du trykker. 
+
+#We get our data
+
+```{r}
+
+path_data <- here::here("data/2024-09-25_INIKA_SAMPLING_ANALYSIS_HUMAN.csv")
+path_data
+```
+
+```{r}
+human_data <-
+  readr::read_csv2(path_data)
+```
+## Exploration of a data frame
+- Name of the columns
+```{r}
+colnames(human_data)
+```
+
+- getting the column names into a vector for pasting and manipulation
+```{r}
+dput(colnames(human_data))
+```
+- explanation: c() is to make vectors
+
+```{r}
+test <- c("one", "2", 3)
+test
+typeof(test)
+class(test)
+```
+- Vectors in R are all of the same type, if text called "character", usually chose and base on the first.
+- Overview of data and data types
+
+
+```{r}
+test <- c("one", "2", 3)
+test
+test[3]
+typeof(test[3])
+typeof(test)
+class(test)
+```
+
+```{r}
+test2 <- c(1, 2, 3)
+typeof(test2)
+class(test2)
+test2*test2
+```
+```{r}
+test2 * c(1,2)
+```
+
+
+
+
+
+
+
+
 
 ## R Markdown
 
