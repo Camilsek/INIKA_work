@@ -1,0 +1,95 @@
+---
+title: "2024-11-22_INIKA"
+author: "camilsek"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Importing data saved as rds (r file format)
+object_name <- readRDS("path/to/file_name.rds")
+```{r}
+library(tidyverse)
+```
+
+```{r}
+here::here()
+```
+Dataene ligger her: C:\Users\vi1295\Documents\INIKA_work\data
+
+
+```{r}
+here::here("data/human_data_selection_dedup.rds")
+human_selection <- readRDS(here::here("data/human_data_selection_dedup.rds"))
+```
+```{r}
+install.packages("RSQLite")
+```
+
+```{r}
+sqlite_path <- "C:/WHONET/Data/TZA-INIKA_TZ-2024.sqlite"
+sqlite_path
+library(RSQLite)
+dbconn <- DBI::dbConnect(RSQLite::SQLite(), 
+                    here::here("C:/WHONET/Data/", "TZA-INIKA_TZ-2024.sqlite"))
+
+str(dbconn)
+print(dbconn)
+```
+
+dbconn builds the connection between the table Eve has made (human_data_selection_dedup.rds og WHONet fil)
+
+```{r}
+dbListTables(dbconn)
+```
+
+```{r}
+mydata_recipie <- tbl(dbconn, "Isolates")
+str(mydata_recipie)
+head(mydata_recipie)
+```
+str - se på strukturen
+head - se på de første kolonnene
+
+```{r}
+show_query(mydata_recipie)
+```
+
+```{r}
+mydata <- mydata_recipie %>%
+  collect()
+```
+
+```{r}
+mydata %>%  select(1:3)
+```
+
+```{r}
+my_innerjoin <- 
+  human_selection %>% 
+  # selecting few columns for testing
+  #  this can be used to do a short selection of the columns if not all are required
+  select(1:3) %>% 
+  dplyr::inner_join(mydata, by = c("INIKA_OH_TZ_ID" = "PATIENT_ID")) 
+
+my_innerjoin %>%
+  #str()
+  head()
+view
+```
+
+```{r}
+mydata %>% 
+  dplyr::inner_join(
+    human_selection %>% 
+      select(1:3), 
+    by = c("PATIENT_ID" = "INIKA_OH_TZ_ID")
+    )    %>% 
+      head() %>% 
+      view()
+  
+```
+
